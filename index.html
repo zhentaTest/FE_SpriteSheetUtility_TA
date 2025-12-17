@@ -106,40 +106,95 @@
         /* Main Content Grid */
         .main-content {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
             gap: 20px;
             margin-bottom: 20px;
         }
 
-        /* Options Panel */
-        .options-panel {
+        /* Settings Panel */
+        .settings-panel {
             background-color: #16213e;
             border-radius: 12px;
             padding: 20px;
         }
 
-        .option-section {
+        .section {
             margin-bottom: 24px;
         }
 
-        .option-section:last-child {
+        .section:last-child {
             margin-bottom: 0;
         }
 
-        .option-header {
+        .section-header {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e94560;
+        }
+
+        .section-content {
+            padding-left: 4px;
+        }
+
+        /* Slider Input Group */
+        .slider-group {
             margin-bottom: 12px;
         }
 
-        .option-title {
-            font-size: 14px;
-            font-weight: 600;
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
         }
 
-        .option-content {
-            padding-left: 4px;
+        .slider-label span {
+            font-size: 13px;
+            color: #cccccc;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: #e94560;
+            cursor: pointer;
+            height: 6px;
+        }
+
+        .number-input {
+            width: 70px;
+            padding: 6px 8px;
+            background-color: #0f3460;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .number-input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+
+        .unit {
+            font-size: 12px;
+            color: #888888;
+            min-width: 20px;
         }
 
         /* Checkbox Styles */
@@ -148,6 +203,7 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            margin-top: 8px;
         }
 
         .checkbox-wrapper input[type="checkbox"] {
@@ -157,173 +213,176 @@
             cursor: pointer;
         }
 
-        /* Sub-options */
-        .sub-options {
-            margin-top: 12px;
-            padding: 12px;
-            background-color: #0f3460;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .sub-options.active {
-            display: block;
-        }
-
-        .sub-option-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .sub-option-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .sub-option-label {
-            font-size: 12px;
+        .checkbox-label {
+            font-size: 13px;
             color: #cccccc;
-            min-width: 60px;
         }
 
-        /* Color Picker */
-        .color-picker-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        input[type="color"] {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background: none;
-        }
-
-        .color-value {
-            font-size: 12px;
-            color: #888888;
-            font-family: monospace;
-        }
-
-        /* Eyedropper Button */
-        .eyedropper-btn {
+        /* Info Box */
+        .info-box {
+            margin-top: 12px;
+            padding: 10px 12px;
             background-color: #0f3460;
-            border: 1px solid #e94560;
-            color: #ffffff;
-            padding: 6px 10px;
             border-radius: 6px;
-            cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s ease;
         }
 
-        .eyedropper-btn:hover {
-            background-color: #e94560;
+        .info-box .detected {
+            color: #4ecca3;
+            font-weight: 600;
         }
 
-        .eyedropper-btn.active {
-            background-color: #e94560;
-        }
-
-        /* Range Slider */
-        .range-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            accent-color: #e94560;
-            cursor: pointer;
-        }
-
-        .range-value {
-            font-size: 12px;
-            color: #888888;
-            min-width: 30px;
-            text-align: right;
+        .info-box.warning {
+            border: 1px solid #ffc107;
+            color: #ffc107;
         }
 
         /* Radio Buttons */
         .radio-group {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 8px;
         }
 
         .radio-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
+            padding: 8px 12px;
+            background-color: #0f3460;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .radio-wrapper:hover {
+            border-color: #e94560;
+        }
+
+        .radio-wrapper.selected {
+            border-color: #e94560;
+            background-color: rgba(233, 69, 96, 0.1);
         }
 
         .radio-wrapper input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            accent-color: #e94560;
-            cursor: pointer;
+            display: none;
         }
 
         .radio-label {
             font-size: 13px;
         }
 
-        /* Sprite Count Info */
-        .sprite-count {
+        .radio-indicator {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #888888;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .radio-wrapper.selected .radio-indicator {
+            border-color: #e94560;
+        }
+
+        .radio-wrapper.selected .radio-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background-color: #e94560;
+            border-radius: 50%;
+        }
+
+        /* Resize Info */
+        .resize-info {
             margin-top: 12px;
             padding: 8px 12px;
-            background-color: #0f3460;
+            background-color: rgba(78, 204, 163, 0.1);
             border-radius: 6px;
             font-size: 12px;
             color: #4ecca3;
         }
 
-        .sprite-count.warning {
-            color: #ffc107;
+        /* Save Mode Radio */
+        .save-mode-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        /* Grid Options */
-        .grid-options {
-            margin-top: 12px;
-            padding: 12px;
-            background-color: #0f3460;
-            border-radius: 8px;
-            display: none;
+        .save-mode-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
         }
 
-        .grid-options.active {
-            display: block;
+        .save-mode-wrapper input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #e94560;
+            cursor: pointer;
         }
 
-        /* Apply Button */
-        .apply-btn {
+        /* Process Button */
+        .process-btn {
             width: 100%;
-            padding: 14px;
-            background-color: #0f3460;
+            padding: 16px;
+            background-color: #e94560;
             color: #ffffff;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             margin-top: 20px;
         }
 
-        .apply-btn:hover:not(:disabled) {
-            background-color: #e94560;
+        .process-btn:hover:not(:disabled) {
+            background-color: #d63d57;
+            transform: translateY(-2px);
         }
 
-        .apply-btn:disabled {
+        .process-btn:disabled {
             background-color: #333333;
             color: #666666;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #0f3460;
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Preview Area */
@@ -374,11 +433,6 @@
         #previewCanvas {
             max-width: 100%;
             max-height: 100%;
-            cursor: default;
-        }
-
-        #previewCanvas.eyedropper-mode {
-            cursor: crosshair;
         }
 
         .preview-placeholder {
@@ -444,30 +498,6 @@
             transform: none;
         }
 
-        /* Loading Spinner */
-        .loading {
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .loading.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #0f3460;
-            border-top-color: #e94560;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* Messages */
         .message {
             padding: 12px 16px;
@@ -504,28 +534,13 @@
                 grid-template-columns: 1fr;
             }
 
-            .options-panel {
+            .settings-panel {
                 order: 2;
             }
 
             .preview-area {
                 order: 1;
             }
-        }
-
-        /* Line thickness select */
-        select {
-            background-color: #0f3460;
-            color: #ffffff;
-            border: 1px solid #333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #e94560;
         }
     </style>
 </head>
@@ -534,7 +549,7 @@
         <!-- Header -->
         <header class="header">
             <h1>🎮 Sprite Sheet Utility</h1>
-            <span class="theme-badge">다크 테마</span>
+            <span class="theme-badge">v1.0</span>
         </header>
 
         <!-- Messages -->
@@ -551,113 +566,103 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Options Panel -->
-            <div class="options-panel">
-                <!-- Option 1: Background Removal -->
-                <div class="option-section">
-                    <div class="option-header">
-                        <label class="checkbox-wrapper">
-                            <input type="checkbox" id="bgRemoveCheck">
-                            <span class="option-title">배경 제거</span>
-                        </label>
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <!-- Grid Adjustment Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <span class="section-title">그리드 조정</span>
                     </div>
-                    <div class="sub-options" id="bgRemoveOptions">
-                        <div class="sub-option-row">
-                            <span class="sub-option-label">배경색</span>
-                            <div class="color-picker-wrapper">
-                                <input type="color" id="bgColor" value="#ffffff">
-                                <span class="color-value" id="bgColorValue">#ffffff</span>
+                    <div class="section-content">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>너비</span>
+                            </div>
+                            <div class="slider-row">
+                                <input type="range" id="gridWidth" min="8" max="512" value="64">
+                                <input type="number" class="number-input" id="gridWidthInput" min="8" max="512" value="64">
+                                <span class="unit">px</span>
                             </div>
                         </div>
-                        <div class="sub-option-row">
-                            <span class="sub-option-label">스포이드</span>
-                            <button class="eyedropper-btn" id="eyedropperBtn">🔍 색상 추출</button>
-                        </div>
-                        <div class="sub-option-row">
-                            <span class="sub-option-label">허용 오차</span>
-                            <div class="range-wrapper">
-                                <input type="range" id="tolerance" min="0" max="50" value="10">
-                                <span class="range-value" id="toleranceValue">10</span>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>높이</span>
                             </div>
+                            <div class="slider-row">
+                                <input type="range" id="gridHeight" min="8" max="512" value="64">
+                                <input type="number" class="number-input" id="gridHeightInput" min="8" max="512" value="64">
+                                <span class="unit">px</span>
+                            </div>
+                        </div>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="squareLock" checked>
+                            <span class="checkbox-label">정사각형 잠금</span>
+                        </label>
+                        <div class="info-box" id="spriteInfo">
+                            감지된 크기: <span class="detected" id="detectedSize">- × - px</span><br>
+                            <span id="spriteCount">이미지를 업로드해주세요</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Option 2: Sprite Size -->
-                <div class="option-section">
-                    <div class="option-header">
-                        <span class="option-title">스프라이트 크기</span>
+                <!-- Output Size Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <span class="section-title">출력 크기</span>
                     </div>
-                    <div class="option-content">
-                        <div class="radio-group">
-                            <label class="radio-wrapper">
-                                <input type="radio" name="spriteSize" value="16" checked>
+                    <div class="section-content">
+                        <div class="radio-group" id="outputSizeGroup">
+                            <label class="radio-wrapper" data-value="16">
+                                <input type="radio" name="outputSize" value="16">
+                                <span class="radio-indicator"></span>
                                 <span class="radio-label">16 × 16</span>
                             </label>
-                            <label class="radio-wrapper">
-                                <input type="radio" name="spriteSize" value="32">
+                            <label class="radio-wrapper" data-value="32">
+                                <input type="radio" name="outputSize" value="32">
+                                <span class="radio-indicator"></span>
                                 <span class="radio-label">32 × 32</span>
                             </label>
-                            <label class="radio-wrapper">
-                                <input type="radio" name="spriteSize" value="48">
+                            <label class="radio-wrapper" data-value="48">
+                                <input type="radio" name="outputSize" value="48">
+                                <span class="radio-indicator"></span>
                                 <span class="radio-label">48 × 48</span>
                             </label>
-                            <label class="radio-wrapper">
-                                <input type="radio" name="spriteSize" value="64">
+                            <label class="radio-wrapper selected" data-value="64">
+                                <input type="radio" name="outputSize" value="64" checked>
+                                <span class="radio-indicator"></span>
                                 <span class="radio-label">64 × 64</span>
                             </label>
                         </div>
-                        <div class="sprite-count" id="spriteCount" style="display: none;"></div>
-                    </div>
-                </div>
-
-                <!-- Option 3: Grid Display -->
-                <div class="option-section">
-                    <div class="option-header">
-                        <label class="checkbox-wrapper">
-                            <input type="checkbox" id="gridCheck">
-                            <span class="option-title">그리드 표시</span>
-                        </label>
-                    </div>
-                    <div class="grid-options" id="gridOptions">
-                        <div class="sub-option-row">
-                            <span class="sub-option-label">그리드 색상</span>
-                            <div class="color-picker-wrapper">
-                                <input type="color" id="gridColor" value="#ff0000">
-                                <span class="color-value" id="gridColorValue">#ff0000</span>
-                            </div>
-                        </div>
-                        <div class="sub-option-row">
-                            <span class="sub-option-label">선 두께</span>
-                            <select id="gridThickness">
-                                <option value="1" selected>1px</option>
-                                <option value="2">2px</option>
-                            </select>
+                        <div class="resize-info" id="resizeInfo" style="display: none;">
+                            리사이징: <span id="resizeRatio"></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Option 4: Save Mode -->
-                <div class="option-section">
-                    <div class="option-header">
-                        <span class="option-title">저장 방식</span>
+                <!-- Save Mode Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <span class="section-title">저장 방식</span>
                     </div>
-                    <div class="option-content">
-                        <div class="radio-group">
-                            <label class="radio-wrapper">
+                    <div class="section-content">
+                        <div class="save-mode-group">
+                            <label class="save-mode-wrapper">
                                 <input type="radio" name="saveMode" value="individual" checked>
-                                <span class="radio-label">개별 스프라이트 저장 (ZIP)</span>
+                                <span>개별 저장 (ZIP)</span>
                             </label>
-                            <label class="radio-wrapper">
+                            <label class="save-mode-wrapper">
                                 <input type="radio" name="saveMode" value="sheet">
-                                <span class="radio-label">시트로 저장 (PNG)</span>
+                                <span>시트 저장 (PNG)</span>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Apply Button -->
-                <button class="apply-btn" id="applyBtn" disabled>적용하기</button>
+                <!-- Process Button -->
+                <button class="process-btn" id="processBtn" disabled>
+                    <span>🚀</span>
+                    <span>작업 시작</span>
+                </button>
                 <div class="loading" id="loadingIndicator">
                     <div class="spinner"></div>
                     <span>처리 중...</span>
@@ -667,7 +672,7 @@
             <!-- Preview Area -->
             <div class="preview-area">
                 <div class="preview-header">
-                    <span class="preview-title">미리보기</span>
+                    <span class="preview-title">프리뷰 캔버스</span>
                 </div>
                 <div class="preview-canvas-wrapper transparency-pattern" id="previewWrapper">
                     <div class="preview-placeholder" id="previewPlaceholder">
@@ -682,7 +687,7 @@
         <!-- Result Area -->
         <div class="result-area">
             <div>
-                <div class="result-info" id="resultInfo">결과: 이미지를 업로드하고 옵션을 적용해주세요</div>
+                <div class="result-info" id="resultInfo">이미지를 업로드하고 작업을 시작해주세요</div>
                 <div class="result-options" id="resultOptions"></div>
             </div>
             <button class="download-btn" id="downloadBtn" disabled>
@@ -702,17 +707,14 @@
             originalImage: null,
             imageWidth: 0,
             imageHeight: 0,
+            gridWidth: 64,
+            gridHeight: 64,
+            squareLock: true,
+            outputSize: 64,
+            saveMode: 'individual',
+            bgColor: { r: 255, g: 255, b: 255 },
             isProcessed: false,
-            eyedropperMode: false,
-            processedImageData: null,
-            spriteSize: 16,
-            gridEnabled: false,
-            bgRemoveEnabled: false,
-            bgColor: '#ffffff',
-            tolerance: 10,
-            gridColor: '#ff0000',
-            gridThickness: 1,
-            saveMode: 'individual'
+            processedSprites: []
         };
 
         // DOM Elements
@@ -722,23 +724,21 @@
             imageInfo: document.getElementById('imageInfo'),
             messageArea: document.getElementById('messageArea'),
 
-            bgRemoveCheck: document.getElementById('bgRemoveCheck'),
-            bgRemoveOptions: document.getElementById('bgRemoveOptions'),
-            bgColor: document.getElementById('bgColor'),
-            bgColorValue: document.getElementById('bgColorValue'),
-            eyedropperBtn: document.getElementById('eyedropperBtn'),
-            tolerance: document.getElementById('tolerance'),
-            toleranceValue: document.getElementById('toleranceValue'),
+            gridWidth: document.getElementById('gridWidth'),
+            gridWidthInput: document.getElementById('gridWidthInput'),
+            gridHeight: document.getElementById('gridHeight'),
+            gridHeightInput: document.getElementById('gridHeightInput'),
+            squareLock: document.getElementById('squareLock'),
 
+            detectedSize: document.getElementById('detectedSize'),
             spriteCount: document.getElementById('spriteCount'),
+            spriteInfo: document.getElementById('spriteInfo'),
 
-            gridCheck: document.getElementById('gridCheck'),
-            gridOptions: document.getElementById('gridOptions'),
-            gridColor: document.getElementById('gridColor'),
-            gridColorValue: document.getElementById('gridColorValue'),
-            gridThickness: document.getElementById('gridThickness'),
+            outputSizeGroup: document.getElementById('outputSizeGroup'),
+            resizeInfo: document.getElementById('resizeInfo'),
+            resizeRatio: document.getElementById('resizeRatio'),
 
-            applyBtn: document.getElementById('applyBtn'),
+            processBtn: document.getElementById('processBtn'),
             loadingIndicator: document.getElementById('loadingIndicator'),
 
             previewWrapper: document.getElementById('previewWrapper'),
@@ -762,22 +762,6 @@
             }, 5000);
         }
 
-        function hexToRgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        }
-
-        function rgbToHex(r, g, b) {
-            return '#' + [r, g, b].map(x => {
-                const hex = x.toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            }).join('');
-        }
-
         function colorDistance(r1, g1, b1, r2, g2, b2) {
             return Math.sqrt(
                 Math.pow(r1 - r2, 2) +
@@ -789,46 +773,58 @@
         function calculateSpriteInfo() {
             if (!state.originalImage) return null;
 
-            const cols = Math.floor(state.imageWidth / state.spriteSize);
-            const rows = Math.floor(state.imageHeight / state.spriteSize);
+            const cols = Math.floor(state.imageWidth / state.gridWidth);
+            const rows = Math.floor(state.imageHeight / state.gridHeight);
             const total = cols * rows;
-            const exactWidth = state.imageWidth % state.spriteSize === 0;
-            const exactHeight = state.imageHeight % state.spriteSize === 0;
+            const exactWidth = state.imageWidth % state.gridWidth === 0;
+            const exactHeight = state.imageHeight % state.gridHeight === 0;
 
             return { cols, rows, total, exactWidth, exactHeight };
         }
 
-        function updateSpriteCount() {
+        function updateSpriteInfo() {
+            elements.detectedSize.textContent = `${state.gridWidth} × ${state.gridHeight} px`;
+
             if (!state.originalImage) {
-                elements.spriteCount.style.display = 'none';
+                elements.spriteCount.textContent = '이미지를 업로드해주세요';
+                elements.spriteInfo.classList.remove('warning');
                 return;
             }
 
             const info = calculateSpriteInfo();
+
             if (info.total === 0) {
-                elements.spriteCount.textContent = '선택한 스프라이트 크기가 이미지보다 큽니다.';
-                elements.spriteCount.className = 'sprite-count warning';
+                elements.spriteCount.textContent = '⚠️ 그리드 크기가 이미지보다 큽니다. 값을 조정해주세요.';
+                elements.spriteInfo.classList.add('warning');
             } else if (!info.exactWidth || !info.exactHeight) {
-                elements.spriteCount.innerHTML = `${info.rows}행 × ${info.cols}열 = <strong>${info.total}개</strong> 스프라이트<br>
-                    <small style="color: #ffc107;">⚠️ 이미지 크기(${state.imageWidth}×${state.imageHeight})가 선택한 크기(${state.spriteSize}×${state.spriteSize})로 정확히 나눠지지 않습니다. 일부 영역이 잘릴 수 있습니다.</small>`;
-                elements.spriteCount.className = 'sprite-count warning';
+                elements.spriteCount.innerHTML = `${info.cols}열 × ${info.rows}행 = <strong>${info.total}개</strong><br>
+                    <small style="color: #ffc107;">⚠️ 이미지 크기가 그리드로 정확히 나눠지지 않습니다. 일부 영역이 잘릴 수 있습니다.</small>`;
+                elements.spriteInfo.classList.add('warning');
             } else {
-                elements.spriteCount.innerHTML = `${info.rows}행 × ${info.cols}열 = <strong>${info.total}개</strong> 스프라이트`;
-                elements.spriteCount.className = 'sprite-count';
+                elements.spriteCount.innerHTML = `${info.cols}열 × ${info.rows}행 = <strong>${info.total}개</strong>`;
+                elements.spriteInfo.classList.remove('warning');
             }
-            elements.spriteCount.style.display = 'block';
+        }
+
+        function updateResizeInfo() {
+            if (!state.originalImage) {
+                elements.resizeInfo.style.display = 'none';
+                return;
+            }
+
+            const ratio = (state.outputSize / state.gridWidth).toFixed(2);
+            elements.resizeRatio.textContent = `${state.gridWidth}×${state.gridHeight} → ${state.outputSize}×${state.outputSize} (${ratio}x)`;
+            elements.resizeInfo.style.display = 'block';
         }
 
         // File Upload Handling
         function handleFile(file) {
-            // Validate file type
             const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
             if (!validTypes.includes(file.type)) {
                 showMessage('지원하지 않는 파일 형식입니다. PNG, JPG, GIF, WebP 파일을 업로드해주세요.', 'error');
                 return;
             }
 
-            // Validate file size (10MB)
             if (file.size > 10 * 1024 * 1024) {
                 showMessage('파일 크기가 10MB를 초과합니다.', 'error');
                 return;
@@ -842,6 +838,7 @@
                     state.imageWidth = img.width;
                     state.imageHeight = img.height;
                     state.isProcessed = false;
+                    state.processedSprites = [];
 
                     // Draw to original canvas
                     elements.originalCanvas.width = img.width;
@@ -851,22 +848,25 @@
 
                     // Auto-detect background color from (0,0) pixel
                     const pixelData = ctx.getImageData(0, 0, 1, 1).data;
-                    const detectedColor = rgbToHex(pixelData[0], pixelData[1], pixelData[2]);
-                    elements.bgColor.value = detectedColor;
-                    elements.bgColorValue.textContent = detectedColor;
-                    state.bgColor = detectedColor;
+                    state.bgColor = {
+                        r: pixelData[0],
+                        g: pixelData[1],
+                        b: pixelData[2]
+                    };
 
                     // Update UI
                     elements.uploadArea.classList.add('has-image');
-                    elements.imageInfo.textContent = `${img.width} × ${img.height} px`;
+                    elements.imageInfo.textContent = `원본: ${img.width} × ${img.height} px`;
                     elements.imageInfo.style.display = 'inline-block';
-                    elements.applyBtn.disabled = false;
+                    elements.processBtn.disabled = false;
+                    elements.downloadBtn.disabled = true;
 
-                    // Show preview
+                    // Update preview and info
                     updatePreview();
-                    updateSpriteCount();
+                    updateSpriteInfo();
+                    updateResizeInfo();
 
-                    showMessage('이미지가 성공적으로 로드되었습니다.', 'success');
+                    showMessage('이미지가 성공적으로 로드되었습니다. 배경색이 자동 감지되었습니다.', 'success');
                 };
                 img.onerror = function() {
                     showMessage('이미지를 불러올 수 없습니다. 다른 파일을 시도해주세요.', 'error');
@@ -905,151 +905,216 @@
             }
         });
 
-        // Event Listeners - Options
-        elements.bgRemoveCheck.addEventListener('change', (e) => {
-            state.bgRemoveEnabled = e.target.checked;
-            elements.bgRemoveOptions.classList.toggle('active', e.target.checked);
+        // Event Listeners - Grid Settings
+        function updateGridWidth(value) {
+            value = Math.max(8, Math.min(512, parseInt(value) || 8));
+            state.gridWidth = value;
+            elements.gridWidth.value = value;
+            elements.gridWidthInput.value = value;
+
+            if (state.squareLock) {
+                state.gridHeight = value;
+                elements.gridHeight.value = value;
+                elements.gridHeightInput.value = value;
+            }
+
+            updateSpriteInfo();
+            updateResizeInfo();
             if (state.originalImage) updatePreview();
+        }
+
+        function updateGridHeight(value) {
+            value = Math.max(8, Math.min(512, parseInt(value) || 8));
+            state.gridHeight = value;
+            elements.gridHeight.value = value;
+            elements.gridHeightInput.value = value;
+
+            if (state.squareLock) {
+                state.gridWidth = value;
+                elements.gridWidth.value = value;
+                elements.gridWidthInput.value = value;
+            }
+
+            updateSpriteInfo();
+            updateResizeInfo();
+            if (state.originalImage) updatePreview();
+        }
+
+        elements.gridWidth.addEventListener('input', (e) => updateGridWidth(e.target.value));
+        elements.gridWidthInput.addEventListener('change', (e) => updateGridWidth(e.target.value));
+        elements.gridHeight.addEventListener('input', (e) => updateGridHeight(e.target.value));
+        elements.gridHeightInput.addEventListener('change', (e) => updateGridHeight(e.target.value));
+
+        elements.squareLock.addEventListener('change', (e) => {
+            state.squareLock = e.target.checked;
+            if (state.squareLock) {
+                updateGridHeight(state.gridWidth);
+            }
         });
 
-        elements.bgColor.addEventListener('input', (e) => {
-            state.bgColor = e.target.value;
-            elements.bgColorValue.textContent = e.target.value;
-            if (state.originalImage && state.bgRemoveEnabled) updatePreview();
-        });
-
-        elements.tolerance.addEventListener('input', (e) => {
-            state.tolerance = parseInt(e.target.value);
-            elements.toleranceValue.textContent = e.target.value;
-            if (state.originalImage && state.bgRemoveEnabled) updatePreview();
-        });
-
-        elements.eyedropperBtn.addEventListener('click', () => {
-            state.eyedropperMode = !state.eyedropperMode;
-            elements.eyedropperBtn.classList.toggle('active', state.eyedropperMode);
-            elements.previewCanvas.classList.toggle('eyedropper-mode', state.eyedropperMode);
-        });
-
-        elements.previewCanvas.addEventListener('click', (e) => {
-            if (!state.eyedropperMode || !state.originalImage) return;
-
-            const rect = elements.previewCanvas.getBoundingClientRect();
-            const scaleX = elements.previewCanvas.width / rect.width;
-            const scaleY = elements.previewCanvas.height / rect.height;
-            const x = Math.floor((e.clientX - rect.left) * scaleX);
-            const y = Math.floor((e.clientY - rect.top) * scaleY);
-
-            const ctx = elements.originalCanvas.getContext('2d');
-            const pixelData = ctx.getImageData(x, y, 1, 1).data;
-            const pickedColor = rgbToHex(pixelData[0], pixelData[1], pixelData[2]);
-
-            state.bgColor = pickedColor;
-            elements.bgColor.value = pickedColor;
-            elements.bgColorValue.textContent = pickedColor;
-
-            // Exit eyedropper mode
-            state.eyedropperMode = false;
-            elements.eyedropperBtn.classList.remove('active');
-            elements.previewCanvas.classList.remove('eyedropper-mode');
-
-            if (state.bgRemoveEnabled) updatePreview();
-        });
-
-        document.querySelectorAll('input[name="spriteSize"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                state.spriteSize = parseInt(e.target.value);
-                updateSpriteCount();
-                if (state.originalImage && state.gridEnabled) updatePreview();
+        // Event Listeners - Output Size
+        document.querySelectorAll('#outputSizeGroup .radio-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', () => {
+                document.querySelectorAll('#outputSizeGroup .radio-wrapper').forEach(w => w.classList.remove('selected'));
+                wrapper.classList.add('selected');
+                wrapper.querySelector('input').checked = true;
+                state.outputSize = parseInt(wrapper.dataset.value);
+                updateResizeInfo();
             });
         });
 
-        elements.gridCheck.addEventListener('change', (e) => {
-            state.gridEnabled = e.target.checked;
-            elements.gridOptions.classList.toggle('active', e.target.checked);
-            if (state.originalImage) updatePreview();
-        });
-
-        elements.gridColor.addEventListener('input', (e) => {
-            state.gridColor = e.target.value;
-            elements.gridColorValue.textContent = e.target.value;
-            if (state.originalImage && state.gridEnabled) updatePreview();
-        });
-
-        elements.gridThickness.addEventListener('change', (e) => {
-            state.gridThickness = parseInt(e.target.value);
-            if (state.originalImage && state.gridEnabled) updatePreview();
-        });
-
+        // Event Listeners - Save Mode
         document.querySelectorAll('input[name="saveMode"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 state.saveMode = e.target.value;
             });
         });
 
-        // Preview Update
+        // Preview Update with Grid Overlay
         function updatePreview() {
             if (!state.originalImage) return;
 
             elements.previewPlaceholder.style.display = 'none';
             elements.previewCanvas.style.display = 'block';
 
-            // Set canvas size
             elements.previewCanvas.width = state.imageWidth;
             elements.previewCanvas.height = state.imageHeight;
 
             const ctx = elements.previewCanvas.getContext('2d');
-
-            // Draw original image
             ctx.drawImage(state.originalImage, 0, 0);
 
-            // Apply background removal if enabled (preview only)
-            if (state.bgRemoveEnabled) {
-                const imageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
-                const data = imageData.data;
-                const bgRgb = hexToRgb(state.bgColor);
+            // Draw grid overlay
+            ctx.strokeStyle = '#FF0000';
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.7;
 
-                for (let i = 0; i < data.length; i += 4) {
-                    const r = data[i];
-                    const g = data[i + 1];
-                    const b = data[i + 2];
-
-                    const distance = colorDistance(r, g, b, bgRgb.r, bgRgb.g, bgRgb.b);
-                    if (distance <= state.tolerance * 4.42) { // Scale tolerance (0-50 maps to ~0-221 in color space)
-                        data[i + 3] = 0; // Set alpha to 0
-                    }
-                }
-
-                ctx.putImageData(imageData, 0, 0);
+            // Vertical lines
+            for (let x = state.gridWidth; x < state.imageWidth; x += state.gridWidth) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, state.imageHeight);
+                ctx.stroke();
             }
 
-            // Draw grid if enabled
-            if (state.gridEnabled) {
-                ctx.strokeStyle = state.gridColor;
-                ctx.lineWidth = state.gridThickness;
-                ctx.globalAlpha = 0.7;
-
-                // Vertical lines
-                for (let x = state.spriteSize; x < state.imageWidth; x += state.spriteSize) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x, state.imageHeight);
-                    ctx.stroke();
-                }
-
-                // Horizontal lines
-                for (let y = state.spriteSize; y < state.imageHeight; y += state.spriteSize) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(state.imageWidth, y);
-                    ctx.stroke();
-                }
-
-                ctx.globalAlpha = 1.0;
+            // Horizontal lines
+            for (let y = state.gridHeight; y < state.imageHeight; y += state.gridHeight) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(state.imageWidth, y);
+                ctx.stroke();
             }
+
+            ctx.globalAlpha = 1.0;
         }
 
-        // Apply Processing
-        elements.applyBtn.addEventListener('click', async () => {
+        // Background Removal
+        function removeBackground(imageData) {
+            const data = imageData.data;
+            const bgColor = state.bgColor;
+            const tolerance = 0; // Exact match for primary background
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+
+                const distance = colorDistance(r, g, b, bgColor.r, bgColor.g, bgColor.b);
+                if (distance <= tolerance) {
+                    data[i + 3] = 0; // Set alpha to 0
+                }
+            }
+
+            return imageData;
+        }
+
+        // Fringe Removal
+        function removeFringe(imageData, width, height) {
+            const data = imageData.data;
+            const bgColor = state.bgColor;
+            const threshold = 40; // Color distance threshold for fringe detection
+
+            // Create a copy to read from while modifying
+            const originalData = new Uint8ClampedArray(data);
+
+            // Helper to get pixel index
+            function getIndex(x, y) {
+                return (y * width + x) * 4;
+            }
+
+            // Helper to check if pixel is transparent
+            function isTransparent(x, y) {
+                if (x < 0 || x >= width || y < 0 || y >= height) return true;
+                return originalData[getIndex(x, y) + 3] === 0;
+            }
+
+            // Helper to check if pixel is edge (adjacent to transparent pixel)
+            function isEdgePixel(x, y) {
+                const neighbors = [
+                    [-1, -1], [0, -1], [1, -1],
+                    [-1, 0],          [1, 0],
+                    [-1, 1],  [0, 1],  [1, 1]
+                ];
+
+                for (const [dx, dy] of neighbors) {
+                    if (isTransparent(x + dx, y + dy)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            // Process each pixel
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = getIndex(x, y);
+                    const alpha = originalData[idx + 3];
+
+                    // Skip fully transparent pixels
+                    if (alpha === 0) continue;
+
+                    // Check if this is an edge pixel
+                    if (isEdgePixel(x, y)) {
+                        const r = originalData[idx];
+                        const g = originalData[idx + 1];
+                        const b = originalData[idx + 2];
+
+                        const distance = colorDistance(r, g, b, bgColor.r, bgColor.g, bgColor.b);
+
+                        // If color is close to background color, make it transparent
+                        if (distance <= threshold) {
+                            data[idx + 3] = 0;
+                        }
+                    }
+                }
+            }
+
+            return imageData;
+        }
+
+        // Resize with Nearest Neighbor
+        function resizeNearestNeighbor(sourceCanvas, sourceX, sourceY, sourceWidth, sourceHeight, targetSize) {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = targetSize;
+            tempCanvas.height = targetSize;
+            const ctx = tempCanvas.getContext('2d');
+
+            // Disable image smoothing for pixel-perfect scaling
+            ctx.imageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
+
+            ctx.drawImage(
+                sourceCanvas,
+                sourceX, sourceY, sourceWidth, sourceHeight,
+                0, 0, targetSize, targetSize
+            );
+
+            return tempCanvas;
+        }
+
+        // Process Sprites
+        elements.processBtn.addEventListener('click', async () => {
             if (!state.originalImage) {
                 showMessage('먼저 이미지를 업로드해주세요.', 'error');
                 return;
@@ -1057,12 +1122,12 @@
 
             const info = calculateSpriteInfo();
             if (info.total === 0) {
-                showMessage('선택한 스프라이트 크기가 이미지보다 큽니다.', 'error');
+                showMessage('감지된 스프라이트가 없습니다. 그리드 크기를 확인해주세요.', 'error');
                 return;
             }
 
             // Show loading
-            elements.applyBtn.style.display = 'none';
+            elements.processBtn.style.display = 'none';
             elements.loadingIndicator.classList.add('active');
 
             const startTime = performance.now();
@@ -1075,53 +1140,50 @@
                 elements.processedCanvas.width = state.imageWidth;
                 elements.processedCanvas.height = state.imageHeight;
                 const ctx = elements.processedCanvas.getContext('2d');
-
-                // Draw original image
                 ctx.drawImage(state.originalImage, 0, 0);
 
-                // Apply background removal if enabled
-                if (state.bgRemoveEnabled) {
-                    const imageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
-                    const data = imageData.data;
-                    const bgRgb = hexToRgb(state.bgColor);
+                // Get image data
+                let imageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
 
-                    for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
+                // Step 1: Remove background
+                imageData = removeBackground(imageData);
 
-                        const distance = colorDistance(r, g, b, bgRgb.r, bgRgb.g, bgRgb.b);
-                        if (distance <= state.tolerance * 4.42) {
-                            data[i + 3] = 0;
-                        }
+                // Step 2: Remove fringe (anti-aliasing artifacts)
+                imageData = removeFringe(imageData, state.imageWidth, state.imageHeight);
+
+                // Put processed image back
+                ctx.putImageData(imageData, 0, 0);
+
+                // Step 3: Split into sprites and resize
+                state.processedSprites = [];
+
+                for (let row = 0; row < info.rows; row++) {
+                    for (let col = 0; col < info.cols; col++) {
+                        const sourceX = col * state.gridWidth;
+                        const sourceY = row * state.gridHeight;
+
+                        const resizedCanvas = resizeNearestNeighbor(
+                            elements.processedCanvas,
+                            sourceX, sourceY,
+                            state.gridWidth, state.gridHeight,
+                            state.outputSize
+                        );
+
+                        state.processedSprites.push(resizedCanvas);
                     }
-
-                    ctx.putImageData(imageData, 0, 0);
                 }
 
-                // Store processed data
-                state.processedImageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
                 state.isProcessed = true;
 
                 const endTime = performance.now();
                 const duration = ((endTime - startTime) / 1000).toFixed(2);
 
                 // Update result info
-                elements.resultInfo.innerHTML = `결과: <span class="highlight">${info.total}개</span> 스프라이트 감지됨 (처리 시간: ${duration}초)`;
-
-                // Build options summary
-                let optionsSummary = [];
-                if (state.bgRemoveEnabled) optionsSummary.push('배경 제거');
-                if (state.gridEnabled) optionsSummary.push('그리드 표시');
-                optionsSummary.push(`크기: ${state.spriteSize}×${state.spriteSize}`);
-                optionsSummary.push(state.saveMode === 'individual' ? '개별 저장' : '시트 저장');
-                elements.resultOptions.textContent = '적용된 옵션: ' + optionsSummary.join(', ');
+                elements.resultInfo.innerHTML = `✅ 완료: <span class="highlight">${info.total}개</span> 스프라이트 (${state.gridWidth}×${state.gridHeight} → ${state.outputSize}×${state.outputSize})`;
+                elements.resultOptions.textContent = `처리 시간: ${duration}초 | ${state.saveMode === 'individual' ? '개별 저장 (ZIP)' : '시트 저장 (PNG)'}`;
 
                 // Enable download
                 elements.downloadBtn.disabled = false;
-
-                // Update preview with grid if enabled
-                updatePreview();
 
                 showMessage('처리가 완료되었습니다!', 'success');
             } catch (error) {
@@ -1129,49 +1191,26 @@
             } finally {
                 // Hide loading
                 elements.loadingIndicator.classList.remove('active');
-                elements.applyBtn.style.display = 'block';
+                elements.processBtn.style.display = 'flex';
             }
         });
 
         // Download
         elements.downloadBtn.addEventListener('click', async () => {
-            if (!state.isProcessed) return;
+            if (!state.isProcessed || state.processedSprites.length === 0) return;
 
             const info = calculateSpriteInfo();
 
             if (state.saveMode === 'individual') {
                 // Individual sprites as ZIP
                 const zip = new JSZip();
-                const tempCanvas = document.createElement('canvas');
-                tempCanvas.width = state.spriteSize;
-                tempCanvas.height = state.spriteSize;
-                const tempCtx = tempCanvas.getContext('2d');
 
-                let spriteNum = 1;
-                for (let row = 0; row < info.rows; row++) {
-                    for (let col = 0; col < info.cols; col++) {
-                        // Clear temp canvas
-                        tempCtx.clearRect(0, 0, state.spriteSize, state.spriteSize);
-
-                        // Get sprite data from processed canvas
-                        const ctx = elements.processedCanvas.getContext('2d');
-                        const spriteData = ctx.getImageData(
-                            col * state.spriteSize,
-                            row * state.spriteSize,
-                            state.spriteSize,
-                            state.spriteSize
-                        );
-
-                        tempCtx.putImageData(spriteData, 0, 0);
-
-                        // Convert to blob and add to zip
-                        const dataUrl = tempCanvas.toDataURL('image/png');
-                        const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
-                        const fileName = `spr_${String(spriteNum).padStart(3, '0')}.png`;
-                        zip.file(fileName, base64Data, { base64: true });
-
-                        spriteNum++;
-                    }
+                for (let i = 0; i < state.processedSprites.length; i++) {
+                    const canvas = state.processedSprites[i];
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
+                    const fileName = `spr_${String(i + 1).padStart(3, '0')}.png`;
+                    zip.file(fileName, base64Data, { base64: true });
                 }
 
                 // Generate and download ZIP
@@ -1183,40 +1222,36 @@
                 URL.revokeObjectURL(link.href);
 
             } else {
-                // Sheet save
-                const outputCanvas = document.createElement('canvas');
-                outputCanvas.width = state.imageWidth;
-                outputCanvas.height = state.imageHeight;
-                const ctx = outputCanvas.getContext('2d');
+                // Sheet save - reassemble sprites into new sheet
+                const sheetWidth = info.cols * state.outputSize;
+                const sheetHeight = info.rows * state.outputSize;
 
-                // Draw processed image
-                ctx.putImageData(state.processedImageData, 0, 0);
+                const sheetCanvas = document.createElement('canvas');
+                sheetCanvas.width = sheetWidth;
+                sheetCanvas.height = sheetHeight;
+                const ctx = sheetCanvas.getContext('2d');
 
-                // Draw grid if enabled
-                if (state.gridEnabled) {
-                    ctx.strokeStyle = state.gridColor;
-                    ctx.lineWidth = state.gridThickness;
-                    ctx.globalAlpha = 0.7;
+                // Disable image smoothing
+                ctx.imageSmoothingEnabled = false;
 
-                    for (let x = state.spriteSize; x < state.imageWidth; x += state.spriteSize) {
-                        ctx.beginPath();
-                        ctx.moveTo(x, 0);
-                        ctx.lineTo(x, state.imageHeight);
-                        ctx.stroke();
-                    }
-
-                    for (let y = state.spriteSize; y < state.imageHeight; y += state.spriteSize) {
-                        ctx.beginPath();
-                        ctx.moveTo(0, y);
-                        ctx.lineTo(state.imageWidth, y);
-                        ctx.stroke();
+                let spriteIndex = 0;
+                for (let row = 0; row < info.rows; row++) {
+                    for (let col = 0; col < info.cols; col++) {
+                        if (spriteIndex < state.processedSprites.length) {
+                            ctx.drawImage(
+                                state.processedSprites[spriteIndex],
+                                col * state.outputSize,
+                                row * state.outputSize
+                            );
+                            spriteIndex++;
+                        }
                     }
                 }
 
                 // Download PNG
                 const link = document.createElement('a');
-                link.href = outputCanvas.toDataURL('image/png');
-                link.download = 'processed_spritesheet.png';
+                link.href = sheetCanvas.toDataURL('image/png');
+                link.download = `spritesheet_${state.outputSize}x${state.outputSize}.png`;
                 link.click();
             }
 
@@ -1225,9 +1260,12 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            // Set initial states
-            state.spriteSize = parseInt(document.querySelector('input[name="spriteSize"]:checked').value);
+            state.gridWidth = parseInt(elements.gridWidth.value);
+            state.gridHeight = parseInt(elements.gridHeight.value);
+            state.squareLock = elements.squareLock.checked;
+            state.outputSize = parseInt(document.querySelector('input[name="outputSize"]:checked').value);
             state.saveMode = document.querySelector('input[name="saveMode"]:checked').value;
+            updateSpriteInfo();
         });
     </script>
 </body>
