@@ -579,8 +579,8 @@
                                 <span>너비</span>
                             </div>
                             <div class="slider-row">
-                                <input type="range" id="gridWidth" min="8" max="512" value="64">
-                                <input type="number" class="number-input" id="gridWidthInput" min="8" max="512" value="64">
+                                <input type="range" id="gridWidth" min="8" max="1024" value="64">
+                                <input type="number" class="number-input" id="gridWidthInput" min="8" max="1024" value="64">
                                 <span class="unit">px</span>
                             </div>
                         </div>
@@ -589,8 +589,8 @@
                                 <span>높이</span>
                             </div>
                             <div class="slider-row">
-                                <input type="range" id="gridHeight" min="8" max="512" value="64">
-                                <input type="number" class="number-input" id="gridHeightInput" min="8" max="512" value="64">
+                                <input type="range" id="gridHeight" min="8" max="1024" value="64">
+                                <input type="number" class="number-input" id="gridHeightInput" min="8" max="1024" value="64">
                                 <span class="unit">px</span>
                             </div>
                         </div>
@@ -907,7 +907,7 @@
 
         // Event Listeners - Grid Settings
         function updateGridWidth(value) {
-            value = Math.max(8, Math.min(512, parseInt(value) || 8));
+            value = Math.max(8, Math.min(1024, parseInt(value) || 8));
             state.gridWidth = value;
             elements.gridWidth.value = value;
             elements.gridWidthInput.value = value;
@@ -924,7 +924,7 @@
         }
 
         function updateGridHeight(value) {
-            value = Math.max(8, Math.min(512, parseInt(value) || 8));
+            value = Math.max(8, Math.min(1024, parseInt(value) || 8));
             state.gridHeight = value;
             elements.gridHeight.value = value;
             elements.gridHeightInput.value = value;
@@ -988,19 +988,30 @@
             ctx.lineWidth = 1;
             ctx.globalAlpha = 0.7;
 
+            const info = calculateSpriteInfo();
+            if (!info || info.total === 0) {
+                ctx.globalAlpha = 1.0;
+                return;
+            }
+            const gridTotalWidth = info.cols * state.gridWidth;
+            const gridTotalHeight = info.rows * state.gridHeight;
+
+            // Draw outer border of grid area
+            ctx.strokeRect(0.5, 0.5, gridTotalWidth - 1, gridTotalHeight - 1);
+
             // Vertical lines
-            for (let x = state.gridWidth; x < state.imageWidth; x += state.gridWidth) {
+            for (let x = state.gridWidth; x < gridTotalWidth; x += state.gridWidth) {
                 ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, state.imageHeight);
+                ctx.moveTo(x + 0.5, 0);
+                ctx.lineTo(x + 0.5, gridTotalHeight);
                 ctx.stroke();
             }
 
             // Horizontal lines
-            for (let y = state.gridHeight; y < state.imageHeight; y += state.gridHeight) {
+            for (let y = state.gridHeight; y < gridTotalHeight; y += state.gridHeight) {
                 ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(state.imageWidth, y);
+                ctx.moveTo(0, y + 0.5);
+                ctx.lineTo(gridTotalWidth, y + 0.5);
                 ctx.stroke();
             }
 
