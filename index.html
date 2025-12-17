@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Sprite Sheet Utility</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: #16213e;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .theme-badge {
+            background-color: #0f3460;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #888888;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #0f3460;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background-color: #16213e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #e94560;
+            background-color: #1a2744;
+        }
+
+        .upload-area.has-image {
+            border-style: solid;
+            border-color: #4ecca3;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .image-info {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background-color: #0f3460;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Main Content Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Options Panel */
+        .options-panel {
+            background-color: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .option-section {
+            margin-bottom: 24px;
+        }
+
+        .option-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .option-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .option-content {
+            padding-left: 4px;
+        }
+
+        /* Checkbox Styles */
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #e94560;
+            cursor: pointer;
+        }
+
+        /* Sub-options */
+        .sub-options {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #0f3460;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .sub-options.active {
+            display: block;
+        }
+
+        .sub-option-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .sub-option-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .sub-option-label {
+            font-size: 12px;
+            color: #cccccc;
+            min-width: 60px;
+        }
+
+        /* Color Picker */
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="color"] {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: none;
+        }
+
+        .color-value {
+            font-size: 12px;
+            color: #888888;
+            font-family: monospace;
+        }
+
+        /* Eyedropper Button */
+        .eyedropper-btn {
+            background-color: #0f3460;
+            border: 1px solid #e94560;
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .eyedropper-btn:hover {
+            background-color: #e94560;
+        }
+
+        .eyedropper-btn.active {
+            background-color: #e94560;
+        }
+
+        /* Range Slider */
+        .range-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: #e94560;
+            cursor: pointer;
+        }
+
+        .range-value {
+            font-size: 12px;
+            color: #888888;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-wrapper input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #e94560;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            font-size: 13px;
+        }
+
+        /* Sprite Count Info */
+        .sprite-count {
+            margin-top: 12px;
+            padding: 8px 12px;
+            background-color: #0f3460;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #4ecca3;
+        }
+
+        .sprite-count.warning {
+            color: #ffc107;
+        }
+
+        /* Grid Options */
+        .grid-options {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #0f3460;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .grid-options.active {
+            display: block;
+        }
+
+        /* Apply Button */
+        .apply-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #0f3460;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .apply-btn:hover:not(:disabled) {
+            background-color: #e94560;
+        }
+
+        .apply-btn:disabled {
+            background-color: #333333;
+            color: #666666;
+            cursor: not-allowed;
+        }
+
+        /* Preview Area */
+        .preview-area {
+            background-color: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .preview-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .preview-canvas-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0f3460;
+            border-radius: 8px;
+            min-height: 400px;
+            overflow: auto;
+            position: relative;
+        }
+
+        /* Transparency Pattern */
+        .transparency-pattern {
+            background-image:
+                linear-gradient(45deg, #444 25%, transparent 25%),
+                linear-gradient(-45deg, #444 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #444 75%),
+                linear-gradient(-45deg, transparent 75%, #444 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+            background-color: #333;
+        }
+
+        #previewCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            cursor: default;
+        }
+
+        #previewCanvas.eyedropper-mode {
+            cursor: crosshair;
+        }
+
+        .preview-placeholder {
+            color: #888888;
+            text-align: center;
+        }
+
+        .preview-placeholder-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        /* Result Area */
+        .result-area {
+            background-color: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-info {
+            font-size: 14px;
+        }
+
+        .result-info .highlight {
+            color: #4ecca3;
+            font-weight: 600;
+        }
+
+        .result-options {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 4px;
+        }
+
+        /* Download Button */
+        .download-btn {
+            padding: 14px 32px;
+            background-color: #4ecca3;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background-color: #3db892;
+            transform: translateY(-2px);
+        }
+
+        .download-btn:disabled {
+            background-color: #333333;
+            color: #666666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #0f3460;
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .message.active {
+            display: block;
+        }
+
+        .message.error {
+            background-color: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .message.warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+
+        .message.success {
+            background-color: rgba(78, 204, 163, 0.2);
+            border: 1px solid #4ecca3;
+            color: #4ecca3;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .options-panel {
+                order: 2;
+            }
+
+            .preview-area {
+                order: 1;
+            }
+        }
+
+        /* Line thickness select */
+        select {
+            background-color: #0f3460;
+            color: #ffffff;
+            border: 1px solid #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎮 Sprite Sheet Utility</h1>
+            <span class="theme-badge">다크 테마</span>
+        </header>
+
+        <!-- Messages -->
+        <div id="messageArea" class="message"></div>
+
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">드래그 앤 드롭 또는 클릭하여 업로드</div>
+            <div class="upload-hint">지원 포맷: PNG, JPG, JPEG, GIF, WebP (최대 10MB)</div>
+            <div class="image-info" id="imageInfo" style="display: none;"></div>
+            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.gif,.webp">
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Options Panel -->
+            <div class="options-panel">
+                <!-- Option 1: Background Removal -->
+                <div class="option-section">
+                    <div class="option-header">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="bgRemoveCheck">
+                            <span class="option-title">배경 제거</span>
+                        </label>
+                    </div>
+                    <div class="sub-options" id="bgRemoveOptions">
+                        <div class="sub-option-row">
+                            <span class="sub-option-label">배경색</span>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="bgColor" value="#ffffff">
+                                <span class="color-value" id="bgColorValue">#ffffff</span>
+                            </div>
+                        </div>
+                        <div class="sub-option-row">
+                            <span class="sub-option-label">스포이드</span>
+                            <button class="eyedropper-btn" id="eyedropperBtn">🔍 색상 추출</button>
+                        </div>
+                        <div class="sub-option-row">
+                            <span class="sub-option-label">허용 오차</span>
+                            <div class="range-wrapper">
+                                <input type="range" id="tolerance" min="0" max="50" value="10">
+                                <span class="range-value" id="toleranceValue">10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Option 2: Sprite Size -->
+                <div class="option-section">
+                    <div class="option-header">
+                        <span class="option-title">스프라이트 크기</span>
+                    </div>
+                    <div class="option-content">
+                        <div class="radio-group">
+                            <label class="radio-wrapper">
+                                <input type="radio" name="spriteSize" value="16" checked>
+                                <span class="radio-label">16 × 16</span>
+                            </label>
+                            <label class="radio-wrapper">
+                                <input type="radio" name="spriteSize" value="32">
+                                <span class="radio-label">32 × 32</span>
+                            </label>
+                            <label class="radio-wrapper">
+                                <input type="radio" name="spriteSize" value="48">
+                                <span class="radio-label">48 × 48</span>
+                            </label>
+                            <label class="radio-wrapper">
+                                <input type="radio" name="spriteSize" value="64">
+                                <span class="radio-label">64 × 64</span>
+                            </label>
+                        </div>
+                        <div class="sprite-count" id="spriteCount" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Option 3: Grid Display -->
+                <div class="option-section">
+                    <div class="option-header">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="gridCheck">
+                            <span class="option-title">그리드 표시</span>
+                        </label>
+                    </div>
+                    <div class="grid-options" id="gridOptions">
+                        <div class="sub-option-row">
+                            <span class="sub-option-label">그리드 색상</span>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="gridColor" value="#ff0000">
+                                <span class="color-value" id="gridColorValue">#ff0000</span>
+                            </div>
+                        </div>
+                        <div class="sub-option-row">
+                            <span class="sub-option-label">선 두께</span>
+                            <select id="gridThickness">
+                                <option value="1" selected>1px</option>
+                                <option value="2">2px</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Option 4: Save Mode -->
+                <div class="option-section">
+                    <div class="option-header">
+                        <span class="option-title">저장 방식</span>
+                    </div>
+                    <div class="option-content">
+                        <div class="radio-group">
+                            <label class="radio-wrapper">
+                                <input type="radio" name="saveMode" value="individual" checked>
+                                <span class="radio-label">개별 스프라이트 저장 (ZIP)</span>
+                            </label>
+                            <label class="radio-wrapper">
+                                <input type="radio" name="saveMode" value="sheet">
+                                <span class="radio-label">시트로 저장 (PNG)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button class="apply-btn" id="applyBtn" disabled>적용하기</button>
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner"></div>
+                    <span>처리 중...</span>
+                </div>
+            </div>
+
+            <!-- Preview Area -->
+            <div class="preview-area">
+                <div class="preview-header">
+                    <span class="preview-title">미리보기</span>
+                </div>
+                <div class="preview-canvas-wrapper transparency-pattern" id="previewWrapper">
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                        <div class="preview-placeholder-icon">🖼️</div>
+                        <div>이미지를 업로드하면 여기에 미리보기가 표시됩니다</div>
+                    </div>
+                    <canvas id="previewCanvas" style="display: none;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Area -->
+        <div class="result-area">
+            <div>
+                <div class="result-info" id="resultInfo">결과: 이미지를 업로드하고 옵션을 적용해주세요</div>
+                <div class="result-options" id="resultOptions"></div>
+            </div>
+            <button class="download-btn" id="downloadBtn" disabled>
+                <span>📥</span>
+                <span>다운로드</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden canvases for processing -->
+    <canvas id="originalCanvas" style="display: none;"></canvas>
+    <canvas id="processedCanvas" style="display: none;"></canvas>
+
+    <script>
+        // State Management
+        const state = {
+            originalImage: null,
+            imageWidth: 0,
+            imageHeight: 0,
+            isProcessed: false,
+            eyedropperMode: false,
+            processedImageData: null,
+            spriteSize: 16,
+            gridEnabled: false,
+            bgRemoveEnabled: false,
+            bgColor: '#ffffff',
+            tolerance: 10,
+            gridColor: '#ff0000',
+            gridThickness: 1,
+            saveMode: 'individual'
+        };
+
+        // DOM Elements
+        const elements = {
+            uploadArea: document.getElementById('uploadArea'),
+            fileInput: document.getElementById('fileInput'),
+            imageInfo: document.getElementById('imageInfo'),
+            messageArea: document.getElementById('messageArea'),
+
+            bgRemoveCheck: document.getElementById('bgRemoveCheck'),
+            bgRemoveOptions: document.getElementById('bgRemoveOptions'),
+            bgColor: document.getElementById('bgColor'),
+            bgColorValue: document.getElementById('bgColorValue'),
+            eyedropperBtn: document.getElementById('eyedropperBtn'),
+            tolerance: document.getElementById('tolerance'),
+            toleranceValue: document.getElementById('toleranceValue'),
+
+            spriteCount: document.getElementById('spriteCount'),
+
+            gridCheck: document.getElementById('gridCheck'),
+            gridOptions: document.getElementById('gridOptions'),
+            gridColor: document.getElementById('gridColor'),
+            gridColorValue: document.getElementById('gridColorValue'),
+            gridThickness: document.getElementById('gridThickness'),
+
+            applyBtn: document.getElementById('applyBtn'),
+            loadingIndicator: document.getElementById('loadingIndicator'),
+
+            previewWrapper: document.getElementById('previewWrapper'),
+            previewPlaceholder: document.getElementById('previewPlaceholder'),
+            previewCanvas: document.getElementById('previewCanvas'),
+
+            originalCanvas: document.getElementById('originalCanvas'),
+            processedCanvas: document.getElementById('processedCanvas'),
+
+            resultInfo: document.getElementById('resultInfo'),
+            resultOptions: document.getElementById('resultOptions'),
+            downloadBtn: document.getElementById('downloadBtn')
+        };
+
+        // Utility Functions
+        function showMessage(message, type = 'error') {
+            elements.messageArea.textContent = message;
+            elements.messageArea.className = `message active ${type}`;
+            setTimeout(() => {
+                elements.messageArea.classList.remove('active');
+            }, 5000);
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        function colorDistance(r1, g1, b1, r2, g2, b2) {
+            return Math.sqrt(
+                Math.pow(r1 - r2, 2) +
+                Math.pow(g1 - g2, 2) +
+                Math.pow(b1 - b2, 2)
+            );
+        }
+
+        function calculateSpriteInfo() {
+            if (!state.originalImage) return null;
+
+            const cols = Math.floor(state.imageWidth / state.spriteSize);
+            const rows = Math.floor(state.imageHeight / state.spriteSize);
+            const total = cols * rows;
+            const exactWidth = state.imageWidth % state.spriteSize === 0;
+            const exactHeight = state.imageHeight % state.spriteSize === 0;
+
+            return { cols, rows, total, exactWidth, exactHeight };
+        }
+
+        function updateSpriteCount() {
+            if (!state.originalImage) {
+                elements.spriteCount.style.display = 'none';
+                return;
+            }
+
+            const info = calculateSpriteInfo();
+            if (info.total === 0) {
+                elements.spriteCount.textContent = '선택한 스프라이트 크기가 이미지보다 큽니다.';
+                elements.spriteCount.className = 'sprite-count warning';
+            } else if (!info.exactWidth || !info.exactHeight) {
+                elements.spriteCount.innerHTML = `${info.rows}행 × ${info.cols}열 = <strong>${info.total}개</strong> 스프라이트<br>
+                    <small style="color: #ffc107;">⚠️ 이미지 크기(${state.imageWidth}×${state.imageHeight})가 선택한 크기(${state.spriteSize}×${state.spriteSize})로 정확히 나눠지지 않습니다. 일부 영역이 잘릴 수 있습니다.</small>`;
+                elements.spriteCount.className = 'sprite-count warning';
+            } else {
+                elements.spriteCount.innerHTML = `${info.rows}행 × ${info.cols}열 = <strong>${info.total}개</strong> 스프라이트`;
+                elements.spriteCount.className = 'sprite-count';
+            }
+            elements.spriteCount.style.display = 'block';
+        }
+
+        // File Upload Handling
+        function handleFile(file) {
+            // Validate file type
+            const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                showMessage('지원하지 않는 파일 형식입니다. PNG, JPG, GIF, WebP 파일을 업로드해주세요.', 'error');
+                return;
+            }
+
+            // Validate file size (10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                showMessage('파일 크기가 10MB를 초과합니다.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    state.originalImage = img;
+                    state.imageWidth = img.width;
+                    state.imageHeight = img.height;
+                    state.isProcessed = false;
+
+                    // Draw to original canvas
+                    elements.originalCanvas.width = img.width;
+                    elements.originalCanvas.height = img.height;
+                    const ctx = elements.originalCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    // Auto-detect background color from (0,0) pixel
+                    const pixelData = ctx.getImageData(0, 0, 1, 1).data;
+                    const detectedColor = rgbToHex(pixelData[0], pixelData[1], pixelData[2]);
+                    elements.bgColor.value = detectedColor;
+                    elements.bgColorValue.textContent = detectedColor;
+                    state.bgColor = detectedColor;
+
+                    // Update UI
+                    elements.uploadArea.classList.add('has-image');
+                    elements.imageInfo.textContent = `${img.width} × ${img.height} px`;
+                    elements.imageInfo.style.display = 'inline-block';
+                    elements.applyBtn.disabled = false;
+
+                    // Show preview
+                    updatePreview();
+                    updateSpriteCount();
+
+                    showMessage('이미지가 성공적으로 로드되었습니다.', 'success');
+                };
+                img.onerror = function() {
+                    showMessage('이미지를 불러올 수 없습니다. 다른 파일을 시도해주세요.', 'error');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Event Listeners - Upload
+        elements.uploadArea.addEventListener('click', () => {
+            elements.fileInput.click();
+        });
+
+        elements.fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        elements.uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            elements.uploadArea.classList.add('dragover');
+        });
+
+        elements.uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            elements.uploadArea.classList.remove('dragover');
+        });
+
+        elements.uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            elements.uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Event Listeners - Options
+        elements.bgRemoveCheck.addEventListener('change', (e) => {
+            state.bgRemoveEnabled = e.target.checked;
+            elements.bgRemoveOptions.classList.toggle('active', e.target.checked);
+            if (state.originalImage) updatePreview();
+        });
+
+        elements.bgColor.addEventListener('input', (e) => {
+            state.bgColor = e.target.value;
+            elements.bgColorValue.textContent = e.target.value;
+            if (state.originalImage && state.bgRemoveEnabled) updatePreview();
+        });
+
+        elements.tolerance.addEventListener('input', (e) => {
+            state.tolerance = parseInt(e.target.value);
+            elements.toleranceValue.textContent = e.target.value;
+            if (state.originalImage && state.bgRemoveEnabled) updatePreview();
+        });
+
+        elements.eyedropperBtn.addEventListener('click', () => {
+            state.eyedropperMode = !state.eyedropperMode;
+            elements.eyedropperBtn.classList.toggle('active', state.eyedropperMode);
+            elements.previewCanvas.classList.toggle('eyedropper-mode', state.eyedropperMode);
+        });
+
+        elements.previewCanvas.addEventListener('click', (e) => {
+            if (!state.eyedropperMode || !state.originalImage) return;
+
+            const rect = elements.previewCanvas.getBoundingClientRect();
+            const scaleX = elements.previewCanvas.width / rect.width;
+            const scaleY = elements.previewCanvas.height / rect.height;
+            const x = Math.floor((e.clientX - rect.left) * scaleX);
+            const y = Math.floor((e.clientY - rect.top) * scaleY);
+
+            const ctx = elements.originalCanvas.getContext('2d');
+            const pixelData = ctx.getImageData(x, y, 1, 1).data;
+            const pickedColor = rgbToHex(pixelData[0], pixelData[1], pixelData[2]);
+
+            state.bgColor = pickedColor;
+            elements.bgColor.value = pickedColor;
+            elements.bgColorValue.textContent = pickedColor;
+
+            // Exit eyedropper mode
+            state.eyedropperMode = false;
+            elements.eyedropperBtn.classList.remove('active');
+            elements.previewCanvas.classList.remove('eyedropper-mode');
+
+            if (state.bgRemoveEnabled) updatePreview();
+        });
+
+        document.querySelectorAll('input[name="spriteSize"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                state.spriteSize = parseInt(e.target.value);
+                updateSpriteCount();
+                if (state.originalImage && state.gridEnabled) updatePreview();
+            });
+        });
+
+        elements.gridCheck.addEventListener('change', (e) => {
+            state.gridEnabled = e.target.checked;
+            elements.gridOptions.classList.toggle('active', e.target.checked);
+            if (state.originalImage) updatePreview();
+        });
+
+        elements.gridColor.addEventListener('input', (e) => {
+            state.gridColor = e.target.value;
+            elements.gridColorValue.textContent = e.target.value;
+            if (state.originalImage && state.gridEnabled) updatePreview();
+        });
+
+        elements.gridThickness.addEventListener('change', (e) => {
+            state.gridThickness = parseInt(e.target.value);
+            if (state.originalImage && state.gridEnabled) updatePreview();
+        });
+
+        document.querySelectorAll('input[name="saveMode"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                state.saveMode = e.target.value;
+            });
+        });
+
+        // Preview Update
+        function updatePreview() {
+            if (!state.originalImage) return;
+
+            elements.previewPlaceholder.style.display = 'none';
+            elements.previewCanvas.style.display = 'block';
+
+            // Set canvas size
+            elements.previewCanvas.width = state.imageWidth;
+            elements.previewCanvas.height = state.imageHeight;
+
+            const ctx = elements.previewCanvas.getContext('2d');
+
+            // Draw original image
+            ctx.drawImage(state.originalImage, 0, 0);
+
+            // Apply background removal if enabled (preview only)
+            if (state.bgRemoveEnabled) {
+                const imageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
+                const data = imageData.data;
+                const bgRgb = hexToRgb(state.bgColor);
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+
+                    const distance = colorDistance(r, g, b, bgRgb.r, bgRgb.g, bgRgb.b);
+                    if (distance <= state.tolerance * 4.42) { // Scale tolerance (0-50 maps to ~0-221 in color space)
+                        data[i + 3] = 0; // Set alpha to 0
+                    }
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            // Draw grid if enabled
+            if (state.gridEnabled) {
+                ctx.strokeStyle = state.gridColor;
+                ctx.lineWidth = state.gridThickness;
+                ctx.globalAlpha = 0.7;
+
+                // Vertical lines
+                for (let x = state.spriteSize; x < state.imageWidth; x += state.spriteSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, state.imageHeight);
+                    ctx.stroke();
+                }
+
+                // Horizontal lines
+                for (let y = state.spriteSize; y < state.imageHeight; y += state.spriteSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(state.imageWidth, y);
+                    ctx.stroke();
+                }
+
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        // Apply Processing
+        elements.applyBtn.addEventListener('click', async () => {
+            if (!state.originalImage) {
+                showMessage('먼저 이미지를 업로드해주세요.', 'error');
+                return;
+            }
+
+            const info = calculateSpriteInfo();
+            if (info.total === 0) {
+                showMessage('선택한 스프라이트 크기가 이미지보다 큽니다.', 'error');
+                return;
+            }
+
+            // Show loading
+            elements.applyBtn.style.display = 'none';
+            elements.loadingIndicator.classList.add('active');
+
+            const startTime = performance.now();
+
+            // Process in next frame to allow UI update
+            await new Promise(resolve => setTimeout(resolve, 10));
+
+            try {
+                // Set up processed canvas
+                elements.processedCanvas.width = state.imageWidth;
+                elements.processedCanvas.height = state.imageHeight;
+                const ctx = elements.processedCanvas.getContext('2d');
+
+                // Draw original image
+                ctx.drawImage(state.originalImage, 0, 0);
+
+                // Apply background removal if enabled
+                if (state.bgRemoveEnabled) {
+                    const imageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
+                    const data = imageData.data;
+                    const bgRgb = hexToRgb(state.bgColor);
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+
+                        const distance = colorDistance(r, g, b, bgRgb.r, bgRgb.g, bgRgb.b);
+                        if (distance <= state.tolerance * 4.42) {
+                            data[i + 3] = 0;
+                        }
+                    }
+
+                    ctx.putImageData(imageData, 0, 0);
+                }
+
+                // Store processed data
+                state.processedImageData = ctx.getImageData(0, 0, state.imageWidth, state.imageHeight);
+                state.isProcessed = true;
+
+                const endTime = performance.now();
+                const duration = ((endTime - startTime) / 1000).toFixed(2);
+
+                // Update result info
+                elements.resultInfo.innerHTML = `결과: <span class="highlight">${info.total}개</span> 스프라이트 감지됨 (처리 시간: ${duration}초)`;
+
+                // Build options summary
+                let optionsSummary = [];
+                if (state.bgRemoveEnabled) optionsSummary.push('배경 제거');
+                if (state.gridEnabled) optionsSummary.push('그리드 표시');
+                optionsSummary.push(`크기: ${state.spriteSize}×${state.spriteSize}`);
+                optionsSummary.push(state.saveMode === 'individual' ? '개별 저장' : '시트 저장');
+                elements.resultOptions.textContent = '적용된 옵션: ' + optionsSummary.join(', ');
+
+                // Enable download
+                elements.downloadBtn.disabled = false;
+
+                // Update preview with grid if enabled
+                updatePreview();
+
+                showMessage('처리가 완료되었습니다!', 'success');
+            } catch (error) {
+                showMessage('처리 중 오류가 발생했습니다: ' + error.message, 'error');
+            } finally {
+                // Hide loading
+                elements.loadingIndicator.classList.remove('active');
+                elements.applyBtn.style.display = 'block';
+            }
+        });
+
+        // Download
+        elements.downloadBtn.addEventListener('click', async () => {
+            if (!state.isProcessed) return;
+
+            const info = calculateSpriteInfo();
+
+            if (state.saveMode === 'individual') {
+                // Individual sprites as ZIP
+                const zip = new JSZip();
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = state.spriteSize;
+                tempCanvas.height = state.spriteSize;
+                const tempCtx = tempCanvas.getContext('2d');
+
+                let spriteNum = 1;
+                for (let row = 0; row < info.rows; row++) {
+                    for (let col = 0; col < info.cols; col++) {
+                        // Clear temp canvas
+                        tempCtx.clearRect(0, 0, state.spriteSize, state.spriteSize);
+
+                        // Get sprite data from processed canvas
+                        const ctx = elements.processedCanvas.getContext('2d');
+                        const spriteData = ctx.getImageData(
+                            col * state.spriteSize,
+                            row * state.spriteSize,
+                            state.spriteSize,
+                            state.spriteSize
+                        );
+
+                        tempCtx.putImageData(spriteData, 0, 0);
+
+                        // Convert to blob and add to zip
+                        const dataUrl = tempCanvas.toDataURL('image/png');
+                        const base64Data = dataUrl.replace(/^data:image\/png;base64,/, '');
+                        const fileName = `spr_${String(spriteNum).padStart(3, '0')}.png`;
+                        zip.file(fileName, base64Data, { base64: true });
+
+                        spriteNum++;
+                    }
+                }
+
+                // Generate and download ZIP
+                const content = await zip.generateAsync({ type: 'blob' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = 'sprites.zip';
+                link.click();
+                URL.revokeObjectURL(link.href);
+
+            } else {
+                // Sheet save
+                const outputCanvas = document.createElement('canvas');
+                outputCanvas.width = state.imageWidth;
+                outputCanvas.height = state.imageHeight;
+                const ctx = outputCanvas.getContext('2d');
+
+                // Draw processed image
+                ctx.putImageData(state.processedImageData, 0, 0);
+
+                // Draw grid if enabled
+                if (state.gridEnabled) {
+                    ctx.strokeStyle = state.gridColor;
+                    ctx.lineWidth = state.gridThickness;
+                    ctx.globalAlpha = 0.7;
+
+                    for (let x = state.spriteSize; x < state.imageWidth; x += state.spriteSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, state.imageHeight);
+                        ctx.stroke();
+                    }
+
+                    for (let y = state.spriteSize; y < state.imageHeight; y += state.spriteSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(state.imageWidth, y);
+                        ctx.stroke();
+                    }
+                }
+
+                // Download PNG
+                const link = document.createElement('a');
+                link.href = outputCanvas.toDataURL('image/png');
+                link.download = 'processed_spritesheet.png';
+                link.click();
+            }
+
+            showMessage('다운로드가 시작되었습니다!', 'success');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial states
+            state.spriteSize = parseInt(document.querySelector('input[name="spriteSize"]:checked').value);
+            state.saveMode = document.querySelector('input[name="saveMode"]:checked').value;
+        });
+    </script>
+</body>
+</html>
